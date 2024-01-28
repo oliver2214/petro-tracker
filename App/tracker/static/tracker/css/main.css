@@ -1,0 +1,22 @@
+.logo-container {
+    display: flex;
+    align-items: flex-end;
+}
+
+.logo-animation img {
+    margin-bottom: 3px;
+    animation: logoAnimation 5s infinite linear;
+    /* Применение анимации к логотипу */
+}
+
+@keyframes logoAnimation {
+    0% {
+        filter: hue-rotate(0deg);
+        /* Начальное состояние - 0 градусов (цвет не изменен) */
+    }
+
+    100% {
+        filter: hue-rotate(360deg);
+        /* Конечное состояние - 360 градусов (полный круг цветового спектра) */
+    }
+}

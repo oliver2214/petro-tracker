@@ -1,0 +1,78 @@
+{% extends 'tracker/base.html' %}
+{% block content %}
+
+<table class="table table-bordered table-sm">
+    <thead class="table-dark">
+        <tr>
+            <th>
+                <div title="Идентификатор финансового инструмента">
+                    <span>Код</span>
+                </div>
+            </th>
+            <th>
+                <div title="Краткое наименование ценной бумаги">
+                    <span>Кратк. наим.</span>
+                </div>
+            </th>
+            <th>
+                <div title="Цена последней сделки">
+                    <span>Последняя</span>
+                </div>
+            </th>
+            <th>
+                <div title="Изменение цены последней сделки к последней цене предыдущего дня, %">
+                    <span>Изм., %</span>
+                </div>
+            </th>
+            <th>
+                <div title="Цена первой сделки">
+                    <span>Первая</span>
+                </div>
+            </th>
+            <th>
+                <div title="Минимальная цена сделки">
+                    <span>Мин.</span>
+                </div>
+            </th>
+            <th>
+                <div title="Максимальная цена сделки">
+                    <span>Макс.</span>
+                </div>
+            </th>
+            <th>
+                <div title="Средневзвешенная цена">
+                    <span>Ср.взвеш.</span>
+                </div>
+            </th>
+            <th>
+                <div title="Объем совершенных сделок, в валюте расчетов">
+                    <span>Объем</span>
+                </div>
+            </th>
+            <th>
+                <div title="Время последнего обновления">
+                    <span>Время</span>
+                </div>
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for item in data_table %}
+        <tr>
+            <th scope="row">{{ item.id }}</th>
+            <td>{{ item.symbol }}</td>
+            <td>{{ item.company_name }}</td>
+            <td>${{ item.last_price }}</td>
+            <td>{{ item.price_change }}%</td>
+            <td>${{ item.first_price }}</td>
+            <td>${{ item.min_price }}</td>
+            <td>${{ item.max_price }}</td>
+            <td>{{ item.volume }}</td>
+            <td>{{ item.last_update }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

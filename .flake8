@@ -1,3 +1,5 @@
 [flake8]
 exclude=.git,__pycache__,conf.py,old,build,dist,env,venv
-ignore = D103,D104,F841,D101
+ignore = D103,D104,F841,D101,D100
+max-line-length=120
+max-complexity=8
