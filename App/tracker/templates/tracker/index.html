@@ -1,5 +1,23 @@
 {% extends 'tracker/base.html' %}
 {% block content %}
+{% load static %}
+
+<!-- Контент страницы -->
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Добро пожаловать на рынок нефтегазовых ценных бумаг!</h2>
+            <p>Здесь вы найдете актуальную информацию о динамике цен, новостях и аналитике в сфере нефтегазового рынка.
+            </p>
+            <p>Мы стремимся предоставить вам всю необходимую информацию для принятия обоснованных решений в инвестициях.
+            </p>
+        </div>
+        <div class="col-md-6">
+            <!-- Placeholder для изображения -->
+            <img src="{% static 'tracker/images/office.jpg' %}" alt="Нефтегазовый рынок" class="img-fluid">
+        </div>
+    </div>
+</div>
 
 
 {% endblock %}
