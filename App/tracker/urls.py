@@ -5,4 +5,5 @@ urlpatterns = [
     path("", views.index, name="home"),
     path("auth/", views.auth, name="auth"),
     path("market/", views.market, name="market"),
+    path("security/<slug:secid>/", views.security, name="security"),
 ]

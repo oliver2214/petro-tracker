@@ -1,9 +1,7 @@
-from datetime import datetime
 import influxdb_client
-from parsers.parser1 import parse_data
+import parsers.parser1
 from influxdb_config import org, url, token
 from influxdb_client.client.write_api import SYNCHRONOUS
-from influxdb_client import WritePrecision
 
 
 client = influxdb_client.InfluxDBClient(url=url,
@@ -11,16 +9,14 @@ client = influxdb_client.InfluxDBClient(url=url,
                                         org=org)
 
 
-bucket = "TSDB1"
+bucket = "PetroTrackerTSDB"
+measurement = "stock_data"
 
 write_api = client.write_api(write_options=SYNCHRONOUS)
 
 
 def main():
-    record = parse_data("my_measurment")
-
-    # p = influxdb_client.Point("my_measurement").tag("location", "Moscow").field("temperature", 11.0)\
-    #    .time(seconds, WritePrecision.S)
+    record = parsers.parser1.parse_data_once_a_day(measurement)
     write_api.write(bucket=bucket, org=org, record="\n".join(record))
 
 

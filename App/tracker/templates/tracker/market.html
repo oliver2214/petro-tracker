@@ -20,11 +20,6 @@
                 </div>
             </th>
             <th>
-                <div title="Изменение цены последней сделки к последней цене предыдущего дня, %">
-                    <span>Изм., %</span>
-                </div>
-            </th>
-            <th>
                 <div title="Цена первой сделки">
                     <span>Первая</span>
                 </div>
@@ -49,27 +44,20 @@
                     <span>Объем</span>
                 </div>
             </th>
-            <th>
-                <div title="Время последнего обновления">
-                    <span>Время</span>
-                </div>
-            </th>
         </tr>
     </thead>
 
     <tbody>
         {% for item in data_table %}
         <tr>
-            <th scope="row">{{ item.id }}</th>
-            <td>{{ item.symbol }}</td>
-            <td>{{ item.company_name }}</td>
-            <td>${{ item.last_price }}</td>
-            <td>{{ item.price_change }}%</td>
-            <td>${{ item.first_price }}</td>
-            <td>${{ item.min_price }}</td>
-            <td>${{ item.max_price }}</td>
-            <td>{{ item.volume }}</td>
-            <td>{{ item.last_update }}</td>
+            <th scope="row"><a href="{% url 'security' item.SECID %}" class="link-dark">{{ item.SECID }}</a></th>
+            <td>{{ item.SHORTNAME }}</td>
+            <td>{{ item.CLOSE }}</td>
+            <td>{{ item.OPEN }}</td>
+            <td>{{ item.LOW }}</td>
+            <td>{{ item.HIGH }}</td>
+            <td>{{ item.WAPRICE }}</td>
+            <td>{{ item.VALUE }}</td>
         </tr>
         {% endfor %}
     </tbody>
