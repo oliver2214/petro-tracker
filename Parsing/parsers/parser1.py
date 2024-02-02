@@ -1,14 +1,14 @@
 import requests
 import re
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 def parse_data_once_a_day(measurement):
     year = 2024
-    month = 1
+    month = 2
     data = []
 
-    for day in range(1, 32):
+    for day in range(1, 2):
         date = f"{year}-{month}-{day}"
 
         SECIDS = ["BANE", "BANEP", "VJGZ", "VJGZP", "GAZP", "RTGZ", "RTGZ", "EUTR", "LKOH", "MFGS", "MFGSP",
@@ -33,7 +33,7 @@ def parse_data_once_a_day(measurement):
                     total = int(total[0])
             start += 100
 
-        for i, line in enumerate(text.split("\n")):  # Пройдемся по всем строкам текста
+        for line in text.split("\n"):  # Пройдемся по всем строкам текста
             # взятого с биржи для оптимизации, вместо поиска каждой необходимой акции
 
             # тут происходит вычленение нужной информации со строки: цена, название и пр при помощи регулярных выражений
@@ -41,7 +41,7 @@ def parse_data_once_a_day(measurement):
 
             # проходим по каждой строке с акциями, если она содержит акцию из SECIDS то работаем с ней
             if info and info[0][1] in SECIDS:
-                timestamp = int(datetime(year, month, day).timestamp() * 1e9)
+                timestamp = int((datetime(year, month, day, 20, 50) + timedelta(hours=3)).timestamp() * 1e9)
                 # для influxdb пришлось добавить "\ ", т.к. запросы для influx содержат служебные пробелы
                 shortname = info[0][0].replace(" ", "\ ")
                 # Формируем строку-запрос для бд на запись, то есть эта строка добавит лишь 1 "строку" в бд

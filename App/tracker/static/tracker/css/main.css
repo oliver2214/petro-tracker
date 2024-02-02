@@ -20,3 +20,23 @@
         /* Конечное состояние - 360 градусов (полный круг цветового спектра) */
     }
 }
+
+#dateInput {
+    width: 200px;
+    /* ширина инпута для даты */
+}
+
+/* Дополнительные стили для обрамления и отступов */
+.d-flex {
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.centered-text {
+    text-align: center;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Отступы сверху и снизу */
+}

@@ -1,5 +1,21 @@
 {% extends 'tracker/base.html' %}
 {% block content %}
+{% load static %}
+
+<div class="centered-text">
+    <h4>Информация по торгам на рынке нефти и газа на {{ date|date:"d.m.Y" }}</h4>
+</div>
+
+<form action="">
+    <div class="d-flex justify-content-end p-3">
+        <div class="me-3">
+            <input type="date" max={{ todays_date }} id="dateInput" class="form-control" name="date" value={{ date|date:"Y-m-d" }}>
+        </div>
+        <button type="submit" class="btn btn-primary">Применить</button>
+    </div>
+</form>
+
+{% if data_table|length > 0 %}
 
 <table class="table table-bordered table-sm">
     <thead class="table-dark">
@@ -62,5 +78,19 @@
         {% endfor %}
     </tbody>
 </table>
+
+{% elif data_table is False %}
+
+<div class="centered-text">
+    <h5>Ошибка подключения к базе данных.</h5>
+</div>
+
+{% else %}
+
+<div class="centered-text">
+    <h5>Информация на эту дату отсутствует: торги не велись или информация отсутствует в базе данных.</h5>
+</div>
+
+{% endif %}
 
 {% endblock %}
