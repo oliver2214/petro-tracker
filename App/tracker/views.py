@@ -1,8 +1,9 @@
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.shortcuts import render
-from .influxdb.database import data_market
+from .influxdb.database import data_market, data_security
 from datetime import datetime, timedelta
+import json
 
 
 def index(request):
@@ -34,8 +35,11 @@ def market(request):
 
 
 def security(request, secid):
+    # функцией data_security подтягиваются данные из influxdb по secid
+    security_dynamics = data_security(secid)
     data = {
         "secid": secid,
+        'prices_json': json.dumps(security_dynamics),
     }
 
     return render(request, "tracker/security.html", data)

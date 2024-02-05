@@ -1,6 +1,14 @@
 {% extends 'tracker/base.html' %}
 {% block content %}
+{% load static %}
 
-<h1>Страница для ценной бумаги с кодом {{secid}}</h1>
+<h4 class="mt-2">График ценной бумаги {{secid}}</h4>
+<script src="{% static 'apache_echarts/echarts.min.js' %}"></script>
+
+<div style="display: none" id="jsonData" data-json="{{ prices_json }}"></div>
+
+<canvas id="candlestick_frame" width="1400" height="700"></canvas>
+
+<script src="{% static 'tracker/js/charts_script.js' %}"></script>
 
 {% endblock %}

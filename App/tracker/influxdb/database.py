@@ -60,3 +60,41 @@ def data_market(date: datetime):
     except Exception as e:
         # Исключение при проблеме с подключением с БД
         return False
+
+
+def data_security(secid):
+    try:
+        data = []
+
+        date_from = "1970-01-01T00:00:00Z"
+        date_to = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+
+        # Формирование запроса
+        query_market_by_secid = f"""from(bucket: "{bucket}")
+        |> range(start: {date_from}, stop: {date_to})
+        |> filter(fn: (r) => r["SECID"] == "{secid}")
+        |> filter(fn: (r) => r["_field"] == "CLOSE" or r["_field"] == "HIGH" or r["_field"] == "LOW" \
+            or r["_field"] == "OPEN" or r["_field"] == "VALUE")
+        |> group(columns: ["_time", "_measurement"])
+    """
+        # Выполнение запроса и получение ответа
+        tables = query_api.query(query_market_by_secid, org=org)
+
+        # Форматирование ответа для view в формат списка списков [date, open, close, lowest, highest, value]
+        for table in tables:
+            data_row = [
+                table.records[0]["_time"].strftime("%Y-%m-%d"),
+                table.records[3]["_value"],
+                table.records[0]["_value"],
+                table.records[2]["_value"],
+                table.records[1]["_value"],
+                table.records[4]["_value"],
+            ]
+
+            data.append(data_row)
+
+        return data
+
+    except Exception as e:
+        # Исключение при проблеме с подключением с БД
+        return False
