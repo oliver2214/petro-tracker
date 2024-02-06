@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
             {
                 type: 'inside',
                 xAxisIndex: [0],
-                start: 0,
+                start: 80,
                 end: 100
             },
             {

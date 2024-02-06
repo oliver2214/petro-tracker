@@ -3,13 +3,11 @@ import re
 from datetime import datetime, timedelta
 
 
-def parse_data_once_a_day(measurement):
-    year = 2024
-    month = 2
+def parse_data_once_a_day(measurement, date_from: datetime, date_to: datetime):
     data = []
 
-    for day in range(1, 2):
-        date = f"{year}-{month}-{day}"
+    while date_to >= date_from:
+        date = f"{date_from.year}-{date_from.month}-{date_from.day}"
 
         SECIDS = ["BANE", "BANEP", "VJGZ", "VJGZP", "GAZP", "RTGZ", "RTGZ", "EUTR", "LKOH", "MFGS", "MFGSP",
                   "NVTK", "CHGZ", "ROSN", "RNFT", "KRKN", "KRKNP", "JNOSP", "JNOS", "SNGS", "SNGSP", "TATN",
@@ -41,7 +39,7 @@ def parse_data_once_a_day(measurement):
 
             # проходим по каждой строке с акциями, если она содержит акцию из SECIDS то работаем с ней
             if info and info[0][1] in SECIDS:
-                timestamp = int((datetime(year, month, day, 20, 50) + timedelta(hours=3)).timestamp() * 1e9)
+                timestamp = int((datetime(date_from.year, date_from.month, date_from.day, 20, 50) + timedelta(hours=3)).timestamp() * 1e9) # noqa
                 # для influxdb пришлось добавить "\ ", т.к. запросы для influx содержат служебные пробелы
                 shortname = info[0][0].replace(" ", "\ ")
                 # Формируем строку-запрос для бд на запись, то есть эта строка добавит лишь 1 "строку" в бд
@@ -49,5 +47,6 @@ def parse_data_once_a_day(measurement):
                 # добавляем эту строку в общий запрос. В конечном итоге получаем один большой запрос на запись данных
                 data.append(line)
 
+        date_from += timedelta(days=1)
     # запрос может содержать данные за несколько дней и месяцев
     return data

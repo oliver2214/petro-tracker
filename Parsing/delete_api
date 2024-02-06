@@ -1,0 +1,21 @@
+import influxdb_client
+from influxdb_config import org, url, token
+
+
+client = influxdb_client.InfluxDBClient(url=url,
+                                        token=token,
+                                        org=org)
+
+delete_api = client.delete_api()
+
+"""
+Delete Data
+"""
+start = "1970-01-01T00:00:00Z"
+stop = "2024-02-07T00:00:00Z"
+delete_api.delete(start, stop, '_measurement="stock_data"', bucket='PetroTrackerTSDB', org=org)
+
+"""
+Close client
+"""
+client.close()
