@@ -24,6 +24,7 @@ function splitData(rawData) {
 document.addEventListener('DOMContentLoaded', function () {
     var data = splitData(loadJson("#jsonData"));
     var chartDom = document.getElementById('candlestick_frame');
+    var secid = document.getElementById('jsonData').getAttribute('secid')
     var myChart = echarts.init(chartDom);
     var option;
 
@@ -34,26 +35,35 @@ document.addEventListener('DOMContentLoaded', function () {
                 type: 'category',
                 data: data.categoryData,
                 boundaryGap: false,
-                axisLine: { onZero: false },
-                splitLine: { show: false },
+                minorTick: {
+                    show: true
+                },
+                minorSplitLine: {
+                    show: true
+                },
                 min: 'dataMin',
                 max: 'dataMax',
                 axisPointer: {
                     z: 100
-                }
+                },
+                boundaryGap: ['20%', '20%'],
             },
         ],
         yAxis: [
             {
                 scale: true,
-                splitArea: {
+                boundaryGap: ['20%', '5%'],
+                minorTick: {
                     show: true
-                }
+                },
+                minorSplitLine: {
+                    show: true
+                },
             },
         ],
         series: [
             {
-                name: 'Dow-Jones index',
+                name: secid,
                 type: 'candlestick',
                 data: data.values,
                 itemStyle: {
@@ -75,30 +85,40 @@ document.addEventListener('DOMContentLoaded', function () {
                 show: true,
                 xAxisIndex: [0],
                 type: 'slider',
-                top: '85%',
-                start: 98,
+                top: '92%',
+                start: 50,
                 end: 100
             }
         ],
         tooltip: {
             trigger: 'axis',
             axisPointer: {
-            type: 'cross'
-            },
-            borderWidth: 1,
+                type: 'cross'
+                },
+            borderWidth: 0,
             borderColor: '#ccc',
             padding: 10,
             textStyle: {
             color: '#000'
             },
-            position: function (pos, params, el, elRect, size) {
-            const obj = {
-                top: 10
-            };
-            obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30;
-            return obj;
-        }
-      },
+            backgroundColor: 'rgba(255, 255, 255, 0)',
+            shadowColor: 'rgba(255, 255, 255, 0)',
+            shadowBlur: 0,
+            position: ['5%', '3%'],
+            formatter: function(params) {
+                var data = params[0].data; // Получаем данные из серии
+                var date = params[0].name
+                var special = ['<strong style="color: BLUE;">' + secid + ' </strong>: ', '<strong>Открытие: </strong>', ', <strong>Закрытие: </strong>',
+                    ', <strong>Макс: </strong>', ', <strong>Мин: </strong>', ', <strong>Объем: </strong>', '<i>' + date + '</i> ']
+                return special[0] + special[6] + special[1] + data[1] + special[2] + data[2] + special[3] + data[3] + special[4] + data[4] + special[5] + data[5] + " &#8381";
+            }
+        },
+        grid: {
+            left: '4%',
+            right: '2%',
+            top: '2%',
+            bottom: '3%',
+        },
     };
 
     option && myChart.setOption(option);
