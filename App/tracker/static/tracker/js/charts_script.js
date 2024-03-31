@@ -93,7 +93,9 @@ document.addEventListener('DOMContentLoaded', function () {
         tooltip: {
             trigger: 'axis',
             axisPointer: {
-                type: 'cross'
+                type: 'cross',
+                position: 'top',
+                confine: true
                 },
             borderWidth: 0,
             borderColor: '#ccc',
@@ -108,9 +110,9 @@ document.addEventListener('DOMContentLoaded', function () {
             formatter: function(params) {
                 var data = params[0].data; // Получаем данные из серии
                 var date = params[0].name
-                var special = ['<strong style="color: BLUE;">' + secid + ' </strong>: ', '<strong>Открытие: </strong>', ', <strong>Закрытие: </strong>',
+                var prefix = ['<strong style="color: BLUE;">' + secid + ' </strong>: ', '<strong>Открытие: </strong>', ', <strong>Закрытие: </strong>',
                     ', <strong>Макс: </strong>', ', <strong>Мин: </strong>', ', <strong>Объем: </strong>', '<i>' + date + '</i> ']
-                return special[0] + special[6] + special[1] + data[1] + special[2] + data[2] + special[3] + data[3] + special[4] + data[4] + special[5] + data[5] + " &#8381";
+                return prefix[0] + prefix[6] + prefix[1] + data[1] + prefix[2] + data[2] + prefix[3] + data[3] + prefix[4] + data[4] + prefix[5] + parseFloat(data[5]).toLocaleString('ru-RU') + " &#8381";
             }
         },
         grid: {

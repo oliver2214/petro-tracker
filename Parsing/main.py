@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 import calendar
 import influxdb_client
 import parsers.parser1
@@ -18,8 +18,8 @@ measurement = "stock_data"
 def main():
     write_api = client.write_api(write_options=SYNCHRONOUS)
 
-    date_from = datetime(2023, 1, 1)
-    date_to = datetime(2024, 2, 7)
+    date_from = datetime(2024, 2, 5)
+    date_to = datetime(2024, 2, 8)
     month = date_from.month
     day = date_from.day
 

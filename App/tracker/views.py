@@ -1,9 +1,15 @@
 from django.http import HttpResponse
 from django.template.loader import render_to_string
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from .influxdb.database import data_market, data_security
 from datetime import datetime, timedelta
 import json
+
+
+# проинициализировал пока здесь, потом когда подыму базу данных уберу
+SECIDS = ["BANE", "BANEP", "VJGZ", "VJGZP", "GAZP", "RTGZ", "RTGZ", "EUTR", "LKOH", "MFGS", "MFGSP",
+          "NVTK", "CHGZ", "ROSN", "RNFT", "KRKN", "KRKNP", "JNOSP", "JNOS", "SNGS", "SNGSP", "TATN",
+          "TATNP", "TRNFP", "YAKG"]
 
 
 def index(request):
@@ -20,7 +26,7 @@ def market(request):
     # Дату выбирает либо пользователь на странице, либо автоматически выбирается предыдущий день
     date_str = request.GET.get("date", None)
     if date_str:
-        # Преобразование "2000-01-01" в datetime(2000, 1, 1)
+        # Преобразование условного "2000-01-01" в datetime(2000, 1, 1)
         date = datetime(*[int(el) for el in date_str.split("-")])
     else:
         date = datetime.now() - timedelta(days=1)
@@ -35,7 +41,9 @@ def market(request):
 
 
 def security(request, secid):
-    # функцией data_security подтягиваются данные из influxdb по secid
+    # функцией data_security подтягиваются данные из influxdb по конкретному secid
+    if secid not in SECIDS:
+        return redirect(to="market")
     security_dynamics = data_security(secid)
     data = {
         "secid": secid,

@@ -2,20 +2,33 @@
 {% block content %}
 {% load static %}
 
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-6">
-            <h2>Добро пожаловать на рынок нефтегазовых ценных бумаг!</h2>
-            <p>Здесь вы найдете актуальную информацию о динамике цен, новостях и аналитике в сфере нефтегазового рынка.
-            </p>
-            <p>Мы стремимся предоставить вам всю необходимую информацию для принятия обоснованных решений в инвестициях.
-            </p>
-        </div>
-        <div class="col-md-6">
-            <img src="{% static 'tracker/images/office.jpg' %}" alt="Нефтегазовый рынок" class="img-thumbnail">
-        </div>
+<head>
+    <meta charset="UTF-8">
+    <title>Главная страница</title>
+    <link href="{% static 'tracker/css/index.css' %}" rel="stylesheet">
+</head>
+    <div class="card-container">
+        <a href="{% url 'market' %}" class="rectangular-card">
+            <div class="card-content">
+                <div class="logo">
+                    <img src="{% static 'tracker/images/moex-logo.jpg' %}" alt="Exchange 1 Logo">
+                </div>
+                <div class="exchange-name">
+                    <h5>MOEX</h5>
+                </div>
+            </div>
+        </a>
+        <a href="{% url 'market' %}" class="rectangular-card">
+            <div class="card-content">
+                <div class="logo">
+                    <img src="{% static 'tracker/images/moex-logo.jpg' %}" alt="Exchange 1 Logo">
+                </div>
+                <div class="exchange-name">
+                    <h5>MOEX</h5>
+                </div>
+            </div>
+        </a>
+        <!-- другие карточки здесь -->
     </div>
-</div>
-
 
 {% endblock %}
