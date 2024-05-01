@@ -2,6 +2,8 @@
 {% block content %}
 {% load static %}
 
+<div class="container">
+
 <script src="{% static 'apache_echarts/echarts.min.js' %}"></script>
 
 <div style="display: none" id="jsonData" data-json="{{ prices_json }}" secid="{{ secid }}"></div>
@@ -9,5 +11,7 @@
 <div class="img-thumbnail" id="candlestick_frame" style="width:1400px;height:700px;" alt="График цены акции"></div>
 
 <script src="{% static 'tracker/js/charts_script.js' %}"></script>
+
+</div>
 
 {% endblock %}

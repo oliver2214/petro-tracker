@@ -5,30 +5,33 @@
 <head>
     <meta charset="UTF-8">
     <title>Главная страница</title>
-    <link href="{% static 'tracker/css/index.css' %}" rel="stylesheet">
 </head>
-    <div class="card-container">
-        <a href="{% url 'market' %}" class="rectangular-card">
-            <div class="card-content">
+
+<div class="stripe-container">
+    <div class="card-container container">
+        <div class="card-content">
+            <a href="{% url 'market' %}" class="rectangular-card">
                 <div class="logo">
                     <img src="{% static 'tracker/images/moex-logo.jpg' %}" alt="Exchange 1 Logo">
                 </div>
                 <div class="exchange-name">
                     <h5>MOEX</h5>
                 </div>
-            </div>
-        </a>
-        <a href="{% url 'market' %}" class="rectangular-card">
-            <div class="card-content">
+            </a>
+        </div>
+        <div class="card-content">
+            <a href="{% url 'market' %}" class="rectangular-card">
                 <div class="logo">
                     <img src="{% static 'tracker/images/moex-logo.jpg' %}" alt="Exchange 1 Logo">
                 </div>
                 <div class="exchange-name">
                     <h5>MOEX</h5>
                 </div>
-            </div>
-        </a>
+            </a>
+        </div>
         <!-- другие карточки здесь -->
     </div>
+</div>
+
 
 {% endblock %}

@@ -1,0 +1,9 @@
+.custom-text {
+    font-size: 20px;
+    /* Увеличить размер текста */
+    color: rgb(24, 24, 24) !important;
+}
+
+.custom-navbar {
+    background-color: rgb(243, 243, 243);
+}

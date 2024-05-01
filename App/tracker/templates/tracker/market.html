@@ -1,96 +1,96 @@
 {% extends 'tracker/base.html' %}
 {% block content %}
 {% load static %}
-
-<div class="centered-text">
-    <h5>Информация по торгам на рынке нефти и газа на {{ date|date:"d.m.Y" }}</h5>
-</div>
-
-<form action="">
-    <div class="d-flex justify-content-end p-3">
-        <div class="me-3">
-            <input type="date" max={{ todays_date }} id="dateInput" class="form-control" name="date" value={{ date|date:"Y-m-d" }}>
-        </div>
-        <button type="submit" class="btn btn-primary">Применить</button>
+<div class="container">
+    <div class="centered-text">
+        <h5>Информация по торгам на рынке нефти и газа на {{ date|date:"d.m.Y" }}</h5>
     </div>
-</form>
 
-{% if data_table|length > 0 %}
+    <form action="">
+        <div class="d-flex justify-content-end p-3">
+            <div class="me-3">
+                <input type="date" max={{ todays_date }} id="dateInput" class="form-control" name="date" value={{ date|date:"Y-m-d" }}>
+            </div>
+            <button type="submit" class="btn btn-primary">Применить</button>
+        </div>
+    </form>
 
-<table class="table table-bordered table-sm">
-    <thead class="table-dark">
-        <tr>
-            <th>
-                <div title="Идентификатор финансового инструмента">
-                    <span>Код</span>
-                </div>
-            </th>
-            <th>
-                <div title="Краткое наименование ценной бумаги">
-                    <span>Кратк. наим.</span>
-                </div>
-            </th>
-            <th>
-                <div title="Цена последней сделки">
-                    <span>Последняя</span>
-                </div>
-            </th>
-            <th>
-                <div title="Цена первой сделки">
-                    <span>Первая</span>
-                </div>
-            </th>
-            <th>
-                <div title="Минимальная цена сделки">
-                    <span>Мин.</span>
-                </div>
-            </th>
-            <th>
-                <div title="Максимальная цена сделки">
-                    <span>Макс.</span>
-                </div>
-            </th>
-            <th>
-                <div title="Средневзвешенная цена">
-                    <span>Ср.взвеш.</span>
-                </div>
-            </th>
-            <th>
-                <div title="Объем совершенных сделок, в валюте расчетов">
-                    <span>Объем</span>
-                </div>
-            </th>
-        </tr>
-    </thead>
+    {% if data_table|length > 0 %}
 
-    <tbody>
-        {% for item in data_table %}
-        <tr>
-            <th scope="row"><a href="{% url 'security' item.SECID %}" class="link-dark">{{ item.SECID }}</a></th>
-            <td>{{ item.SHORTNAME }}</td>
-            <td>{{ item.CLOSE }}</td>
-            <td>{{ item.OPEN }}</td>
-            <td>{{ item.LOW }}</td>
-            <td>{{ item.HIGH }}</td>
-            <td>{{ item.WAPRICE }}</td>
-            <td>{{ item.VALUE }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <table class="table table-bordered table-sm">
+        <thead class="table-dark">
+            <tr>
+                <th>
+                    <div title="Идентификатор финансового инструмента">
+                        <span>Код</span>
+                    </div>
+                </th>
+                <th>
+                    <div title="Краткое наименование ценной бумаги">
+                        <span>Кратк. наим.</span>
+                    </div>
+                </th>
+                <th>
+                    <div title="Цена последней сделки">
+                        <span>Последняя</span>
+                    </div>
+                </th>
+                <th>
+                    <div title="Цена первой сделки">
+                        <span>Первая</span>
+                    </div>
+                </th>
+                <th>
+                    <div title="Минимальная цена сделки">
+                        <span>Мин.</span>
+                    </div>
+                </th>
+                <th>
+                    <div title="Максимальная цена сделки">
+                        <span>Макс.</span>
+                    </div>
+                </th>
+                <th>
+                    <div title="Средневзвешенная цена">
+                        <span>Ср.взвеш.</span>
+                    </div>
+                </th>
+                <th>
+                    <div title="Объем совершенных сделок, в валюте расчетов">
+                        <span>Объем</span>
+                    </div>
+                </th>
+            </tr>
+        </thead>
 
-{% elif data_table is False %}
+        <tbody>
+            {% for item in data_table %}
+            <tr>
+                <th scope="row"><a href="{% url 'security' item.SECID %}" class="link-dark">{{ item.SECID }}</a></th>
+                <td>{{ item.SHORTNAME }}</td>
+                <td>{{ item.CLOSE }}</td>
+                <td>{{ item.OPEN }}</td>
+                <td>{{ item.LOW }}</td>
+                <td>{{ item.HIGH }}</td>
+                <td>{{ item.WAPRICE }}</td>
+                <td>{{ item.VALUE }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
-<div class="centered-text">
-    <h5>Ошибка подключения к базе данных.</h5>
+    {% elif data_table is False %}
+
+    <div class="centered-text">
+        <h5>Ошибка подключения к базе данных.</h5>
+    </div>
+
+    {% else %}
+
+    <div class="centered-text">
+        <h5>Информация на эту дату отсутствует: торги не велись или информация отсутствует в базе данных.</h5>
+    </div>
 </div>
-
-{% else %}
-
-<div class="centered-text">
-    <h5>Информация на эту дату отсутствует: торги не велись или информация отсутствует в базе данных.</h5>
-</div>
-
 {% endif %}
 
 {% endblock %}

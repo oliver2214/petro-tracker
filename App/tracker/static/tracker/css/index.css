@@ -5,47 +5,38 @@ body {
     background-attachment: fixed;
 }
 
-.card-container {
-    display: flex;
-    flex-direction: row;
-    /* Карточки идут в ряд */
-    align-items: center;
-    /* Выравнивание элементов по вертикали */
-    margin-top: 40%
-}
-
-.rectangular-card {
-    background-color: #383838bf;
-    border: none;
-    border-radius: 56px;
-    box-sizing: border-box;
-    column-gap: 8px;
-    cursor: pointer;
-    direction: ltr;
-    display: grid;
-    grid-template-columns: 28px 1fr;
-    width: 150px;
-    /* Ширина карточки */
-    height: 60px;
-    /* Высота карточки */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s;
-    text-decoration: none;
-    margin-right: 36px;
-    /* Расстояние между карточками */
-}
-
-.rectangular-card:hover {
-    transform: scale(1.1);
-}
-
 .card-content {
     display: flex;
     align-items: center;
     padding: 5px;
 }
 
-.logo img {
+.card-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 50vh;
+}
+
+.rectangular-card {
+    display: flex;
+    align-items: center;
+    /* Центрирование контента по вертикали */
+    justify-content: center;
+    /* Центрирование контента по горизонтали */
+    background-color: #383838bf;
+    border: none;
+    border-radius: 56px;
+    box-sizing: border-box;
+    width: 150px;
+    height: 60px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+    text-decoration: none;
+    margin-right: 36px;
+}
+
+.rectangular-card img {
     width: 50px;
     /* Ширина логотипа */
     height: 50px;
@@ -53,6 +44,10 @@ body {
     border-radius: 50%;
     margin-right: 10px;
     /* Отступ между логотипом и названием */
+}
+
+.rectangular-card:hover {
+    transform: scale(1.1);
 }
 
 .exchange-name {
@@ -63,4 +58,24 @@ body {
 .exchange-name h5 {
     margin: 0;
     /* Убираем отступы у названия */
+}
+
+.custom-text {
+    font-size: 20px;
+    /* Увеличить размер текста */
+    color: white !important;
+}
+
+.stripe-container {
+    background-color: rgba(104, 104, 104, 0.2);
+    /* Прозрачный цвет полоски */
+    width: 100%;
+    /* Ширина полоски на всю ширину страницы */
+    /* Другие стили для полоски (высота, отступы и т.д.) */
+}
+
+.btn-toggler {
+    background-color: white;
+    /* Установка белого цвета фона */
+    /* Дополнительные стили по желанию */
 }

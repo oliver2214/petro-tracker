@@ -8,14 +8,19 @@ flake8==7.0.0
 flake8-builtins==2.2.0
 flake8-docstrings==1.7.0
 idna==3.6
+influxdb-client==1.40.0
 mccabe==0.7.0
--e git+ssh://git@github.com/oliver2214/petro-tracker.git@78fb8f3da2e61e7ebca374274e7e31cf4a1f4cd9#egg=petrotracker
+-e git+ssh://git@github.com/oliver2214/petro-tracker.git@d024efa19c2f154adc1365f3b114f694c9b5a3ac#egg=petrotracker
 pycodestyle==2.11.1
 pydocstyle==6.3.0
 pyflakes==3.2.0
+python-dateutil==2.8.2
+reactivex==4.0.4
 requests==2.31.0
+six==1.16.0
 snowballstemmer==2.2.0
 soupsieve==2.5
 sqlparse==0.4.4
+typing_extensions==4.9.0
 tzdata==2023.4
 urllib3==2.1.0

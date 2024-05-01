@@ -1,5 +1,3 @@
-from django.http import HttpResponse
-from django.template.loader import render_to_string
 from django.shortcuts import redirect, render
 from .influxdb.database import data_market, data_security
 from datetime import datetime, timedelta
@@ -13,8 +11,8 @@ SECIDS = ["BANE", "BANEP", "VJGZ", "VJGZP", "GAZP", "RTGZ", "RTGZ", "EUTR", "LKO
 
 
 def index(request):
-    response = render_to_string("tracker/index.html")
-    return HttpResponse(response)
+    data = {"stylesheet_file": "index.css"}
+    return render(request, "tracker/index.html", data)
 
 
 def auth(request):
@@ -32,6 +30,7 @@ def market(request):
         date = datetime.now() - timedelta(days=1)
 
     data = {
+        "stylesheet_file": "base.css",
         "data_table": data_market(date),
         "date": date,
         "todays_date": datetime.now().strftime('%Y-%m-%d')
@@ -46,6 +45,7 @@ def security(request, secid):
         return redirect(to="market")
     security_dynamics = data_security(secid)
     data = {
+        "stylesheet_file": "base.css",
         "secid": secid,
         'prices_json': json.dumps(security_dynamics),
     }
