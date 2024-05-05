@@ -35,25 +35,23 @@ def data_market(date: datetime):
         date_to = date.strftime("%Y-%m-%dT23:59:00Z")
 
         # Формирование запроса
-        query_market_by_secid = f"""from(bucket: "{bucket}")
+        query_market_by_ticker = f"""from(bucket: "{bucket}")
         |> range(start: {date_from}, stop: {date_to})
         |> filter(fn: (r) => r._measurement == "{measurement}")
-        |> group(columns: ["_time", "SECID"])
+        |> group(columns: ["_time", "TICKER"])
     """
         # Выполнение запроса и получение ответа
-        tables = query_api.query(query_market_by_secid, org=org)
+        tables = query_api.query(query_market_by_ticker, org=org)
 
         # Форматирование ответа для view в формат списка словарей
         for table in tables:
             data_dict = {
-                "SECID": table.records[0]["SECID"],
-                "SHORTNAME": table.records[0]["SHORTNAME"].strip('"'),
+                "TICKER": table.records[0]["TICKER"],
                 table.records[0]["_field"]: table.records[0]["_value"],
                 table.records[1]["_field"]: table.records[1]["_value"],
                 table.records[2]["_field"]: table.records[2]["_value"],
                 table.records[3]["_field"]: table.records[3]["_value"],
                 table.records[4]["_field"]: table.records[4]["_value"],
-                table.records[5]["_field"]: table.records[5]["_value"],
             }
 
             data.append(data_dict)
@@ -65,7 +63,7 @@ def data_market(date: datetime):
         return False
 
 
-def data_security(secid):
+def data_security(exchange, ticker):
     try:
         data = []
 
@@ -73,15 +71,16 @@ def data_security(secid):
         date_to = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
 
         # Формирование запроса
-        query_market_by_secid = f"""from(bucket: "{bucket}")
+        query_market_by_ticker = f"""from(bucket: "{bucket}")
         |> range(start: {date_from}, stop: {date_to})
-        |> filter(fn: (r) => r["SECID"] == "{secid}")
+        |> filter(fn: (r) => r["EXCHANGE"] == "{exchange.upper()}")
+        |> filter(fn: (r) => r["TICKER"] == "{ticker}")
         |> filter(fn: (r) => r["_field"] == "CLOSE" or r["_field"] == "HIGH" or r["_field"] == "LOW" \
             or r["_field"] == "OPEN" or r["_field"] == "VALUE")
         |> group(columns: ["_time", "_measurement"])
     """
         # Выполнение запроса и получение ответа
-        tables = query_api.query(query_market_by_secid, org=org)
+        tables = query_api.query(query_market_by_ticker, org=org)
 
         # Форматирование ответа для view в формат списка списков [date, open, close, lowest, highest, value]
         for table in tables:

@@ -32,7 +32,7 @@ def print_lost_exchanges(lost_exchanges):
 def parse_data():
     write_api = client.write_api(write_options=SYNCHRONOUS)
 
-    # пока нет Postgresql, где будут хранится биржи и их акции, я использую словарь бирж(ключ) и их списка акций(значение)
+    # пока нет Postgresql, где будут хранится биржи и их акции, использую словарь бирж(ключ) и их списка акций(значение)
     exchanges = {
         "MOEX": ["BANE", "BANEP", "VJGZ", "VJGZP", "GAZP", "RTGZ", "RTGZ", "EUTR", "LKOH", "MFGS", "MFGSP",
                  "NVTK", "CHGZ", "ROSN", "RNFT", "KRKN", "KRKNP", "JNOSP", "JNOS", "SNGS", "SNGSP", "TATN",
@@ -67,7 +67,7 @@ def clear_bucket_by_measurement():
     delete_api = client.delete_api()
 
     start = "1970-01-01T00:00:00Z"
-    stop = "2024-02-07T00:00:00Z"
+    stop = "2024-05-05T00:00:00Z"
     delete_api.delete(start, stop, f'_measurement={measurement}', bucket=bucket, org=org)
 
     client.close()

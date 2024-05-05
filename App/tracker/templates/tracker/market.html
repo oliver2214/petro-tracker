@@ -51,11 +51,6 @@
                     </div>
                 </th>
                 <th>
-                    <div title="Средневзвешенная цена">
-                        <span>Ср.взвеш.</span>
-                    </div>
-                </th>
-                <th>
                     <div title="Объем совершенных сделок, в валюте расчетов">
                         <span>Объем</span>
                     </div>
@@ -66,13 +61,12 @@
         <tbody>
             {% for item in data_table %}
             <tr>
-                <th scope="row"><a href="{% url 'security' item.SECID %}" class="link-dark">{{ item.SECID }}</a></th>
-                <td>{{ item.SHORTNAME }}</td>
+                <th scope="row"><a href="{% url 'security' exchange item.TICKER %}" class="link-dark">{{ item.TICKER }}</a></th>
+                <td>N/A</td>
                 <td>{{ item.CLOSE }}</td>
                 <td>{{ item.OPEN }}</td>
                 <td>{{ item.LOW }}</td>
                 <td>{{ item.HIGH }}</td>
-                <td>{{ item.WAPRICE }}</td>
                 <td>{{ item.VALUE }}</td>
             </tr>
             {% endfor %}
