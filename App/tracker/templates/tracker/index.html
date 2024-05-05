@@ -12,7 +12,7 @@
         <div class="card-content">
             <a href="{% url 'market' exchange='moex' %}" class="rectangular-card">
                 <div class="logo">
-                    <img src="{% static 'tracker/images/moex-logo.jpg' %}" alt="Exchange 1 Logo">
+                    <img src="{% static 'tracker/images/moex-logo.jpg' %}" alt="moex Logo">
                 </div>
                 <div class="exchange-name">
                     <h5>MOEX</h5>
@@ -20,16 +20,25 @@
             </a>
         </div>
         <div class="card-content">
-            <a href="{% url 'market' exchange='moex' %}" class="rectangular-card">
+            <a href="{% url 'market' exchange='nasdaq' %}" class="rectangular-card">
                 <div class="logo">
-                    <img src="{% static 'tracker/images/moex-logo.jpg' %}" alt="Exchange 1 Logo">
+                    <img src="{% static 'tracker/images/nasdaq-logo.jpg' %}" alt="nasdaq Logo">
                 </div>
                 <div class="exchange-name">
-                    <h5>СПБ биржа</h5>
+                    <h5>Nasdaq</h5>
                 </div>
             </a>
         </div>
-        <!-- другие карточки здесь -->
+        <div class="card-content">
+            <a href="{% url 'market' exchange='sse' %}" class="rectangular-card">
+                <div class="logo">
+                    <img src="{% static 'tracker/images/sse-logo.png' %}" alt="Shanghai Stock Exchange Logo">
+                </div>
+                <div class="exchange-name">
+                    <h6>Shanghai Stock Exchange</h6>
+                </div>
+            </a>
+        </div>
     </div>
 </div>
 

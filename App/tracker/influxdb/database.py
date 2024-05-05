@@ -11,7 +11,7 @@ client = influxdb_client.InfluxDBClient(url=url,
 query_api = client.query_api()
 
 
-def data_market(date: datetime):
+def data_market(date: datetime, exchange: str):
     """
     Функция для предоставления информации на страницу market.
     Для работы требуется поднять сервер для работы с БД
@@ -38,6 +38,7 @@ def data_market(date: datetime):
         query_market_by_ticker = f"""from(bucket: "{bucket}")
         |> range(start: {date_from}, stop: {date_to})
         |> filter(fn: (r) => r._measurement == "{measurement}")
+        |> filter(fn: (r) => r["EXCHANGE"] == "{exchange.upper()}")
         |> group(columns: ["_time", "TICKER"])
     """
         # Выполнение запроса и получение ответа

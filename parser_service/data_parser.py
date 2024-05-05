@@ -36,7 +36,14 @@ def parse_data():
     exchanges = {
         "MOEX": ["BANE", "BANEP", "VJGZ", "VJGZP", "GAZP", "RTGZ", "RTGZ", "EUTR", "LKOH", "MFGS", "MFGSP",
                  "NVTK", "CHGZ", "ROSN", "RNFT", "KRKN", "KRKNP", "JNOSP", "JNOS", "SNGS", "SNGSP", "TATN",
-                 "TATNP", "TRNFP", "YAKG"]
+                 "TATNP", "TRNFP", "YAKG"],
+        "NASDAQ": ["ACDC", "APA", "ARLP", "BANL", "BRY", "CHK", "CHKEL", "CHKEW", "CHKEZ", "CHRD", "CLMT",
+                   "DMLP", "DWSN", "EPSN", "FANG", "HPK", "HPKEW", "MARPS", "NEXT", "PAA", "PAGP", "PFIE",
+                   "PNRG", "PRTG", "PTEN", "RCON", "USEG", "VNOM"],
+        "SSE": ["601918", "600688", "601015", "600121", "600256", "600997", "601857", "600971", "601101",
+                "605090", "600395", "600546", "601011", "600968", "600985", "600123", "600777", "601898",
+                "601666", "600348", "600758", "601001", "601699", "601225", "600180", "601088", "600938",
+                "600792", "900948", "600725", "600740", "600508", "603619", "600403", "600188"]
     }
     lost_exchanges = dict()
 
@@ -47,7 +54,7 @@ def parse_data():
             symbol_data = None
             lost_counter = 0
             while (symbol_data is None or symbol_data.empty) and lost_counter < 3:
-                symbol_data = tv.get_hist(symbol=symbol, exchange=exchange, interval=Interval.in_daily, n_bars=10)
+                symbol_data = tv.get_hist(symbol=symbol, exchange=exchange, interval=Interval.in_daily, n_bars=60)
 
             if lost_counter == 3:
                 lost_symbols.append(symbol)

@@ -131,8 +131,7 @@ document.addEventListener("DOMContentLoaded", function () {
           prefix[4] +
           data[4] +
           prefix[5] +
-          parseFloat(data[5]).toLocaleString("ru-RU") +
-          " &#8381"
+          parseFloat(data[5]).toLocaleString("ru-RU")
         );
       },
     },
