@@ -1,4 +1,5 @@
 # Файл для подключения и описания запросов на чтение к InfluxDB
+from influxdb_client.client.exceptions import InfluxDBError
 
 from datetime import datetime
 import influxdb_client
@@ -59,7 +60,7 @@ def data_market(date: datetime, exchange: str):
 
         return data
 
-    except Exception as e:
+    except InfluxDBError as exception:
         # Исключение при проблеме с подключением с БД
         return False
 
@@ -98,6 +99,6 @@ def data_security(exchange, ticker):
 
         return data
 
-    except Exception as e:
+    except InfluxDBError as exception:
         # Исключение при проблеме с подключением с БД
         return False

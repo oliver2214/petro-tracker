@@ -21,7 +21,7 @@ exchanges = {
 
 def index(request):
     data = {"stylesheet_file": "index.css",
-            "exchanges": ["MOEX", "NASDAQ"]
+            "exchanges": ["MOEX", "NASDAQ", "SSE"]
             }
     return render(request, "tracker/index.html", data)
 

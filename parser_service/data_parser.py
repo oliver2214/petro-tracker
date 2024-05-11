@@ -2,7 +2,7 @@ from influxdb_client.client.write_api import SYNCHRONOUS
 import influxdb_client
 from tvDatafeed import TvDatafeed, Interval
 
-from influxdb_config import bucket, measurement, org, token, url, trading_view_password, trading_view_username
+from parser_config import bucket, measurement, org, token, url, trading_view_password, trading_view_username
 
 
 tv = TvDatafeed(password=trading_view_password, username=trading_view_username)
