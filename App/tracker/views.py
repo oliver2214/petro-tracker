@@ -1,27 +1,20 @@
+import json
+from datetime import datetime, timedelta
+
 from django.shortcuts import redirect, render
 from .influxdb.database import data_market, data_security
-from datetime import datetime, timedelta
-import json
-
-
-# проинициализировал пока здесь, потом когда подыму базу данных уберу
-exchanges = {
-        "MOEX": ["BANE", "BANEP", "VJGZ", "VJGZP", "GAZP", "RTGZ", "RTGZ", "EUTR", "LKOH", "MFGS", "MFGSP",
-                 "NVTK", "CHGZ", "ROSN", "RNFT", "KRKN", "KRKNP", "JNOSP", "JNOS", "SNGS", "SNGSP", "TATN",
-                 "TATNP", "TRNFP", "YAKG"],
-        "NASDAQ": ["ACDC", "APA", "ARLP", "BANL", "BRY", "CHK", "CHKEL", "CHKEW", "CHKEZ", "CHRD", "CLMT",
-                   "DMLP", "DWSN", "EPSN", "FANG", "HPK", "HPKEW", "MARPS", "NEXT", "PAA", "PAGP", "PFIE",
-                   "PNRG", "PRTG", "PTEN", "RCON", "USEG", "VNOM"],
-        "SSE": ["601918", "600688", "601015", "600121", "600256", "600997", "601857", "600971", "601101",
-                "605090", "600395", "600546", "601011", "600968", "600985", "600123", "600777", "601898",
-                "601666", "600348", "600758", "601001", "601699", "601225", "600180", "601088", "600938",
-                "600792", "900948", "600725", "600740", "600508", "603619", "600403", "600188"]
-}
+from .models import Exchanges, Securities
 
 
 def index(request):
+    # Получаем все объекты из модели Exchanges и извлекаем значения exchange_code
+    exchanges = Exchanges.objects.values_list('exchange_code', flat=True)
+
+    # Преобразуем QuerySet в список
+    exchanges_list = list(exchanges)
+
     data = {"stylesheet_file": "index.css",
-            "exchanges": ["MOEX", "NASDAQ", "SSE"]
+            "exchanges": exchanges_list
             }
     return render(request, "tracker/index.html", data)
 
@@ -30,7 +23,7 @@ def auth(request):
     return render(request, "tracker/auth.html")
 
 
-def market(request, exchange):
+def market(request):
     # Для отображения информации о торгах нужна конкретная дата
     # Дату выбирает либо пользователь на странице, либо автоматически выбирается предыдущий день
     date_str = request.GET.get("date", None)
@@ -41,10 +34,29 @@ def market(request, exchange):
         # Если дата не указана, устанавливается по умолчанию предыдущий день
         date = datetime.now() - timedelta(days=1)
 
+    # Получаем все объекты из модели Exchanges и извлекаем значения exchange_code
+    exchanges_responce_orm = Exchanges.objects.values_list('exchange_code', flat=True)
+
+    # Преобразуем QuerySet в словарь бирж
+    exchanges = {exchange: None for exchange in list(exchanges_responce_orm)}
+
+    for exchange in exchanges.keys():
+        exchanges[exchange] = data_market(date, exchange=exchange)
+        if exchanges[exchange]:
+            securities = Securities.objects.filter(exchange__exchange_code=exchange).values('ticker', 'shortname')
+            for security in securities:
+                exchanges[exchange][security['ticker']]['SHORTNAME'] = security['shortname']
+
+    # Если все разы из БД вернулось False, то exchanges = False (Отсутствует подключение к БД)
+    if all(map(lambda exchange: exchange is False, exchanges.values())):
+        exchanges = False
+
+    if all(map(lambda exchange: len(exchange) == 0, exchanges.values())):
+        exchanges = []
+
     data = {
         "stylesheet_file": "base.css",
-        "exchange": exchange,
-        "data_table": data_market(date, exchange=exchange),
+        "data_table": exchanges,
         "date": date,
         "todays_date": datetime.now().strftime('%Y-%m-%d')
     }
@@ -52,17 +64,37 @@ def market(request, exchange):
     return render(request, "tracker/market.html", data)
 
 
-def security(request, exchange, ticker):
-    # функцией data_security подтягиваются данные из influxdb по конкретному ticker
-    if exchange.upper() not in exchanges or ticker.upper() not in exchanges[exchange.upper()]:
-        return redirect(to="market", exchange=exchange)
-    security_dynamics = data_security(exchange, ticker)
+def security(request, exchange_code, ticker):
+    try:
+        # Проверяем, существует ли указанная акция в указанной бирже
+        exchange = Exchanges.objects.get(exchange_code=exchange_code.upper())
+        security = Securities.objects.get(exchange=exchange, ticker=ticker.upper())
+    except (Exchanges.DoesNotExist, Securities.DoesNotExist):
+        # Если акция или биржа не существует, делаем редирект на страницу рынка
+        return redirect(to="market")
+
+    # Получаем данные о динамике цены акции из функции data_security
+    security_dynamics = data_security(exchange_code, ticker)
     if security_dynamics is False:
-        return redirect(to="market", exchange=exchange)
+        # Если данные о динамике цены акции недоступны, делаем редирект на страницу рынка
+        return redirect(to="market")
+
+    security_data = {
+        "ticker": security.ticker,
+        "shortname": security.shortname,
+        "description": security.description,
+        "site": security.site,
+        "CEO": security.CEO,
+        "ISIN": security.ISIN,
+        "exchange_code": exchange_code,
+    }
+
+    # Формируем контекст для передачи данных в шаблон
     data = {
         "stylesheet_file": "base.css",
         "ticker": ticker,
         'prices_json': json.dumps(security_dynamics),
+        'security_data': security_data,
     }
 
     return render(request, "tracker/security.html", data)

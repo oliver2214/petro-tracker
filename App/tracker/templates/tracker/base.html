@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     {% load static %}
@@ -22,8 +22,9 @@
                 </div>
             </a>
 
-            <button class="navbar-toggler btn-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler btn-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -34,16 +35,33 @@
                     </li>
                 </ul>
             </div>
-            <!-- <div class="d-flex justify-content-end">
-                <a href="#"><button class="btn btn-light">Регистрация</button></a>
-                <a href="{% url 'auth' %}"><button class="btn btn-info bg-light">Войти</button></a>
-            </div> -->
         </div>
     </nav>
 
     {% block content %}
     {% endblock %}
 
+    <!-- Подвал -->
+    <footer class="footer mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <ul class="footer-menu">
+                        <li style="display: inline-block; margin-right: 20px;"><a href="#" class="link-secondary">О нас</a></li>
+                        <li style="display: inline-block; margin-right: 20px;"><a href="#" class="link-secondary">Контакты</a>
+                        </li>
+                        <li style="display: inline-block; margin-right: 20px;"><a href="https://github.com/oliver2214/petro-tracker" class="link-secondary">Проект</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p class="all-rights-reserved text-secondary">Все права защищены &copy; {{ year }}</p>
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
 
 </html>

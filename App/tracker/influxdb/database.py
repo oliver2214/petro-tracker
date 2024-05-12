@@ -28,8 +28,7 @@ def data_market(date: datetime, exchange: str):
     - False: В случае ошибки подключения к базе данных.
     """
     try:
-        data = []
-
+        exchange_data = dict()
         # Даты начала и конца считывания данных формат:2021-05-22T23:30:00Z
         # В данном случае берется текущий день с промежутком с 00:00 до 23:59, чтобы захватить все временные точки
         date_from = date.strftime("%Y-%m-%dT00:00:00Z")
@@ -48,7 +47,6 @@ def data_market(date: datetime, exchange: str):
         # Форматирование ответа для view в формат списка словарей
         for table in tables:
             data_dict = {
-                "TICKER": table.records[0]["TICKER"],
                 table.records[0]["_field"]: table.records[0]["_value"],
                 table.records[1]["_field"]: table.records[1]["_value"],
                 table.records[2]["_field"]: table.records[2]["_value"],
@@ -56,11 +54,11 @@ def data_market(date: datetime, exchange: str):
                 table.records[4]["_field"]: table.records[4]["_value"],
             }
 
-            data.append(data_dict)
+            exchange_data[table.records[0]["TICKER"]] = data_dict
 
-        return data
+        return exchange_data
 
-    except InfluxDBError as exception:
+    except Exception as exception:
         # Исключение при проблеме с подключением с БД
         return False
 
@@ -99,6 +97,6 @@ def data_security(exchange, ticker):
 
         return data
 
-    except InfluxDBError as exception:
+    except Exception as exception:
         # Исключение при проблеме с подключением с БД
         return False

@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
                 ('site', models.CharField(blank=True, max_length=64)),
                 ('CEO', models.CharField(blank=True, max_length=64)),
                 ('ISIN', models.CharField(max_length=32)),
-                ('exchange_id', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='tracker.exchanges')),
+                ('exchange', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='tracker.exchanges')),
             ],
         ),
     ]

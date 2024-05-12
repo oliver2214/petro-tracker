@@ -1,7 +1,7 @@
 {% extends 'tracker/base.html' %}
 {% block content %}
 {% load static %}
-<div class="container">
+<div class="container" styles="height: 50vh;">
     <div class="centered-text">
         <h5>Информация по торгам на рынке нефти и газа на {{ date|date:"d.m.Y" }}</h5>
     </div>
@@ -17,6 +17,8 @@
 
     {% if data_table|length > 0 %}
 
+    {% for exchange, securities in data_table.items %}
+    <h6>{{ exchange }}</h6>
     <table class="table table-bordered table-sm">
         <thead class="table-dark">
             <tr>
@@ -59,19 +61,21 @@
         </thead>
 
         <tbody>
-            {% for item in data_table %}
+            {% for ticker, security in securities.items %}
             <tr>
-                <th scope="row"><a href="{% url 'security' exchange item.TICKER %}" class="link-dark">{{ item.TICKER }}</a></th>
-                <td>N/A</td>
-                <td>{{ item.CLOSE }}</td>
-                <td>{{ item.OPEN }}</td>
-                <td>{{ item.LOW }}</td>
-                <td>{{ item.HIGH }}</td>
-                <td>{{ item.VALUE }}</td>
+                <th scope="row"><a href="{% url 'security' exchange ticker %}" class="link-dark">{{ ticker }}</a></th>
+                <td>{{ security.SHORTNAME }}</td>
+                <td>{{ security.CLOSE }}</td>
+                <td>{{ security.OPEN }}</td>
+                <td>{{ security.LOW }}</td>
+                <td>{{ security.HIGH }}</td>
+                <td>{{ security.VALUE }}</td>
             </tr>
             {% endfor %}
         </tbody>
+
     </table>
+    {% endfor %}
 
     {% elif data_table is False %}
 

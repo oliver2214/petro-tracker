@@ -7,40 +7,23 @@
     <title>Главная страница</title>
 </head>
 
-<div class="stripe-container">
-    <div class="card-container container">
-        <div class="card-content">
-            <a href="{% url 'market' exchange='moex' %}" class="rectangular-card">
-                <div class="logo">
-                    <img src="{% static 'tracker/images/moex-logo.jpg' %}" alt="moex Logo">
-                </div>
-                <div class="exchange-name">
-                    <h5>MOEX</h5>
-                </div>
-            </a>
-        </div>
-        <div class="card-content">
-            <a href="{% url 'market' exchange='nasdaq' %}" class="rectangular-card">
-                <div class="logo">
-                    <img src="{% static 'tracker/images/nasdaq-logo.jpg' %}" alt="nasdaq Logo">
-                </div>
-                <div class="exchange-name">
-                    <h5>Nasdaq</h5>
-                </div>
-            </a>
-        </div>
-        <div class="card-content">
-            <a href="{% url 'market' exchange='sse' %}" class="rectangular-card">
-                <div class="logo">
-                    <img src="{% static 'tracker/images/sse-logo.png' %}" alt="Shanghai Stock Exchange Logo">
-                </div>
-                <div class="exchange-name">
-                    <h6>Shanghai Stock Exchange</h6>
-                </div>
-            </a>
+<div class="fullscreen-container" style="height: 50vh;">
+    <div class="stripe-container">
+        <div class="card-container container">
+            {% for exchange in exchanges %}
+            <div class="card-content">
+                <a href="{% url 'market'%}" class="rectangular-card">
+                    <div class="logo">
+                        <img src="{% static 'tracker/images/' %}{{ exchange }}-logo.jpg" alt="{{ exchange }} Logo">
+                    </div>
+                    <div class="exchange-name">
+                        <h5>{{ exchange }}</h5>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
         </div>
     </div>
 </div>
-
 
 {% endblock %}

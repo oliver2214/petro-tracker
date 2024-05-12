@@ -54,7 +54,7 @@ def parse_data():
             symbol_data = None
             lost_counter = 0
             while (symbol_data is None or symbol_data.empty) and lost_counter < 3:
-                symbol_data = tv.get_hist(symbol=symbol, exchange=exchange, interval=Interval.in_daily, n_bars=60)
+                symbol_data = tv.get_hist(symbol=symbol, exchange=exchange, interval=Interval.in_daily, n_bars=15)
 
             if lost_counter == 3:
                 lost_symbols.append(symbol)

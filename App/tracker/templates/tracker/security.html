@@ -3,14 +3,62 @@
 {% load static %}
 
 <div class="container">
+    <div class="row mt-5">
+        <div class="col-md-6">
+            <h5 class="fw-bold">Краткое наименование</h5>
+            <p>{{ security_data.shortname }}</p>
+        </div>
+        <div class="col-md-6">
+            <h5 class="fw-bold">Описание</h5>
+            <p>{{ security_data.description }}</p>
+        </div>
+    </div>
 
-<script src="{% static 'apache_echarts/echarts.min.js' %}"></script>
+    <script src="{% static 'apache_echarts/echarts.min.js' %}"></script>
 
-<div style="display: none" id="jsonData" data-json="{{ prices_json }}" ticker="{{ ticker }}"></div>
+    <div style="display: none" id="jsonData" data-json="{{ prices_json }}" ticker="{{ ticker }}"></div>
 
-<div class="img-thumbnail" id="candlestick_frame" style="width:1400px;height:700px;" alt="График цены акции"></div>
+    <div class="img-thumbnail" id="candlestick_frame" style="width:1400px;height:700px;" alt="График цены акции"></div>
 
-<script src="{% static 'tracker/js/charts_script.js' %}"></script>
+    <script src="{% static 'tracker/js/charts_script.js' %}"></script>
+
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Сайт</h5>
+                    <a href="https://{{ security_data.site }}" target="_blank">{{ security_data.site }}</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Генеральный директор</h5>
+                    <p class="card-text">{{ security_data.CEO }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">ISIN</h5>
+                    <p class="card-text">{{ security_data.ISIN }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Инструмент</h5>
+                    <p class="card-text">{{ security_data.exchange_code }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
 
