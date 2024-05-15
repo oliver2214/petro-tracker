@@ -1,6 +1,7 @@
 {% extends 'tracker/base.html' %}
 {% block content %}
 {% load static %}
+
 <div class="container" styles="height: 50vh;">
     <div class="centered-text">
         <h5>Информация по торгам на рынке нефти и газа на {{ date|date:"d.m.Y" }}</h5>
@@ -17,75 +18,92 @@
 
     {% if data_table|length > 0 %}
 
-    {% for exchange, securities in data_table.items %}
+        {% for exchange_code, exchange_data in data_table.items %}
 
-        {% if securities|length > 0 %}
-        <h6>{{ exchange }}</h6>
-        <table class="table table-bordered table-sm">
-            <thead class="table-dark">
-                <tr>
-                    <th>
-                        <div title="Идентификатор финансового инструмента">
-                            <span>Код</span>
-                        </div>
-                    </th>
-                    <th>
-                        <div title="Краткое наименование ценной бумаги">
-                            <span>Кратк. наим.</span>
-                        </div>
-                    </th>
-                    <th>
-                        <div title="Цена последней сделки">
-                            <span>Последняя</span>
-                        </div>
-                    </th>
-                    <th>
-                        <div title="Цена первой сделки">
-                            <span>Первая</span>
-                        </div>
-                    </th>
-                    <th>
-                        <div title="Минимальная цена сделки">
-                            <span>Мин.</span>
-                        </div>
-                    </th>
-                    <th>
-                        <div title="Максимальная цена сделки">
-                            <span>Макс.</span>
-                        </div>
-                    </th>
-                    <th>
-                        <div title="Объем совершенных сделок, в валюте расчетов">
-                            <span>Объем</span>
-                        </div>
-                    </th>
-                    <th>
-                        <div title="Изменения за день">
-                            <span>Изменения за день</span>
-                        </div>
-                    </th>
-                </tr>
-            </thead>
+            {% if exchange_data.stocks|length > 0 %}
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading{{ exchange_code }}">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapse{{ exchange_code }}" aria-expanded="false"
+                        aria-controls="collapse{{ exchange_code }}">{{ exchange_code }} - {{ exchange_data.exchange_shortname }}
+                    </button>
+                </h2>
+                <div id="collapse{{ exchange_code }}" class="accordion-collapse collapse"
+                    aria-labelledby="heading{{ exchange_code }}">
+                    <div class="accordion-body">
 
-            <tbody>
-                {% for ticker, security in securities.items %}
-                <tr>
-                    <th scope="row"><a href="{% url 'security' exchange ticker %}" class="link-dark">{{ ticker }}</a></th>
-                    <td>{{ security.SHORTNAME }}</td>
-                    <td>{{ security.CLOSE }}</td>
-                    <td>{{ security.OPEN }}</td>
-                    <td>{{ security.LOW }}</td>
-                    <td>{{ security.HIGH }}</td>
-                    <td>{{ security.VALUE }}</td>
-                    <td style="color: {% if security.DAY_CHANGES > 0 %}green{% elif security.DAY_CHANGES < 0 %}red{% endif %}">
-                        <strong>{{ security.DAY_CHANGES }}</strong>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        {% endif %}
-    </table>
-    {% endfor %}
+                        <a href="{% url 'market'%}" class="link-primary">{{ exchange_code }}</a>
+
+                        <table class="table table-bordered table-sm">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>
+                                        <div title="Идентификатор финансового инструмента">
+                                            <span>Код</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div title="Краткое наименование ценной бумаги">
+                                            <span>Кратк. наим.</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div title="Цена последней сделки">
+                                            <span>Последняя, {{ exchange_data.currency }}</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div title="Цена первой сделки">
+                                            <span>Первая, {{ exchange_data.currency }}</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div title="Минимальная цена сделки">
+                                            <span>Мин., {{ exchange_data.currency }}</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div title="Максимальная цена сделки">
+                                            <span>Макс., {{ exchange_data.currency }}</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div title="Объем совершенных сделок, в валюте расчетов">
+                                            <span>Объем</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div title="Изменения за день">
+                                            <span>Изменения за день, %</span>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for ticker, security in exchange_data.stocks.items %}
+                                <tr>
+                                    <th scope="row"><a href="{% url 'security' exchange_code ticker %}" class="link-dark">{{ ticker }}</a></th>
+                                    <td>{{ security.SHORTNAME }}</td>
+                                    <td>{{ security.CLOSE }}</td>
+                                    <td>{{ security.OPEN }}</td>
+                                    <td>{{ security.LOW }}</td>
+                                    <td>{{ security.HIGH }}</td>
+                                    <td>{{ security.VALUE }}</td>
+                                    <td
+                                        style="color: {% if security.DAY_CHANGES > 0 %}green{% elif security.DAY_CHANGES < 0 %}red{% endif %}">
+                                        <strong>{{ security.DAY_CHANGES }}</strong>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </table>
+        {% endfor %}
 
     {% elif data_table is False %}
 

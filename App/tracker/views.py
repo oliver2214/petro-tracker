@@ -35,19 +35,19 @@ def market(request):
         date = datetime.now() - timedelta(days=1)
 
     # Получаем все объекты из модели Exchanges и извлекаем значения exchange_code
-    exchanges_responce_orm = Exchanges.objects.values_list('exchange_code', flat=True)
+    exchanges_responce_orm = Exchanges.objects.values_list('exchange_code', 'currency', 'shortname')
 
     # Преобразуем QuerySet в словарь бирж
-    exchanges = {exchange: None for exchange in list(exchanges_responce_orm)}
+    exchanges = {exchange[0]: {"currency": exchange[1], "exchange_shortname": exchange[2]} for exchange in list(exchanges_responce_orm)}
 
     # Слияние данных influxdb и postgresql, чтобы консистентно отправить в html
     for exchange in exchanges.keys():
-        exchanges[exchange] = data_market(date, exchange=exchange)
-        if exchanges[exchange]:
+        exchanges[exchange]["stocks"] = data_market(date, exchange=exchange)
+        if exchanges[exchange]["stocks"]:
             securities = Securities.objects.filter(exchange__exchange_code=exchange).values('ticker', 'shortname')
             for security in securities:
-                if exchanges[exchange].get(security['ticker'], False):
-                    exchanges[exchange][security['ticker']]['SHORTNAME'] = security['shortname']
+                if exchanges[exchange]["stocks"].get(security['ticker'], False):
+                    exchanges[exchange]["stocks"][security['ticker']]['SHORTNAME'] = security['shortname']
 
     # Если все разы из БД вернулось False, то exchanges = False (Отсутствует подключение к БД)
     if all(map(lambda exchange: exchange is False, exchanges.values())):
