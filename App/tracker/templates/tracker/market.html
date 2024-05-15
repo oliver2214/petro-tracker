@@ -18,62 +18,72 @@
     {% if data_table|length > 0 %}
 
     {% for exchange, securities in data_table.items %}
-    <h6>{{ exchange }}</h6>
-    <table class="table table-bordered table-sm">
-        <thead class="table-dark">
-            <tr>
-                <th>
-                    <div title="Идентификатор финансового инструмента">
-                        <span>Код</span>
-                    </div>
-                </th>
-                <th>
-                    <div title="Краткое наименование ценной бумаги">
-                        <span>Кратк. наим.</span>
-                    </div>
-                </th>
-                <th>
-                    <div title="Цена последней сделки">
-                        <span>Последняя</span>
-                    </div>
-                </th>
-                <th>
-                    <div title="Цена первой сделки">
-                        <span>Первая</span>
-                    </div>
-                </th>
-                <th>
-                    <div title="Минимальная цена сделки">
-                        <span>Мин.</span>
-                    </div>
-                </th>
-                <th>
-                    <div title="Максимальная цена сделки">
-                        <span>Макс.</span>
-                    </div>
-                </th>
-                <th>
-                    <div title="Объем совершенных сделок, в валюте расчетов">
-                        <span>Объем</span>
-                    </div>
-                </th>
-            </tr>
-        </thead>
 
-        <tbody>
-            {% for ticker, security in securities.items %}
-            <tr>
-                <th scope="row"><a href="{% url 'security' exchange ticker %}" class="link-dark">{{ ticker }}</a></th>
-                <td>{{ security.SHORTNAME }}</td>
-                <td>{{ security.CLOSE }}</td>
-                <td>{{ security.OPEN }}</td>
-                <td>{{ security.LOW }}</td>
-                <td>{{ security.HIGH }}</td>
-                <td>{{ security.VALUE }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
+        {% if securities|length > 0 %}
+        <h6>{{ exchange }}</h6>
+        <table class="table table-bordered table-sm">
+            <thead class="table-dark">
+                <tr>
+                    <th>
+                        <div title="Идентификатор финансового инструмента">
+                            <span>Код</span>
+                        </div>
+                    </th>
+                    <th>
+                        <div title="Краткое наименование ценной бумаги">
+                            <span>Кратк. наим.</span>
+                        </div>
+                    </th>
+                    <th>
+                        <div title="Цена последней сделки">
+                            <span>Последняя</span>
+                        </div>
+                    </th>
+                    <th>
+                        <div title="Цена первой сделки">
+                            <span>Первая</span>
+                        </div>
+                    </th>
+                    <th>
+                        <div title="Минимальная цена сделки">
+                            <span>Мин.</span>
+                        </div>
+                    </th>
+                    <th>
+                        <div title="Максимальная цена сделки">
+                            <span>Макс.</span>
+                        </div>
+                    </th>
+                    <th>
+                        <div title="Объем совершенных сделок, в валюте расчетов">
+                            <span>Объем</span>
+                        </div>
+                    </th>
+                    <th>
+                        <div title="Изменения за день">
+                            <span>Изменения за день</span>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
 
+            <tbody>
+                {% for ticker, security in securities.items %}
+                <tr>
+                    <th scope="row"><a href="{% url 'security' exchange ticker %}" class="link-dark">{{ ticker }}</a></th>
+                    <td>{{ security.SHORTNAME }}</td>
+                    <td>{{ security.CLOSE }}</td>
+                    <td>{{ security.OPEN }}</td>
+                    <td>{{ security.LOW }}</td>
+                    <td>{{ security.HIGH }}</td>
+                    <td>{{ security.VALUE }}</td>
+                    <td style="color: {% if security.DAY_CHANGES > 0 %}green{% elif security.DAY_CHANGES < 0 %}red{% endif %}">
+                        <strong>{{ security.DAY_CHANGES }}</strong>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        {% endif %}
     </table>
     {% endfor %}
 

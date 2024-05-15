@@ -52,6 +52,7 @@ def data_market(date: datetime, exchange: str):
                 table.records[2]["_field"]: table.records[2]["_value"],
                 table.records[3]["_field"]: table.records[3]["_value"],
                 table.records[4]["_field"]: table.records[4]["_value"],
+                "DAY_CHANGES": round((table.records[3]["_value"] - table.records[0]["_value"]) / table.records[3]["_value"] * 100, 2),  # noqa
             }
 
             exchange_data[table.records[0]["TICKER"]] = data_dict

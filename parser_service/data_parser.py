@@ -54,12 +54,14 @@ def parse_data():
             symbol_data = None
             lost_counter = 0
             while (symbol_data is None or symbol_data.empty) and lost_counter < 3:
-                symbol_data = tv.get_hist(symbol=symbol, exchange=exchange, interval=Interval.in_daily, n_bars=15)
+                symbol_data = tv.get_hist(symbol=symbol, exchange=exchange, interval=Interval.in_daily, n_bars=2)
 
             if lost_counter == 3:
                 lost_symbols.append(symbol)
+                print(f"exchange:{exchange}, symbol:{symbol} - failed")
             else:
                 exchange_data_strings.extend(get_symbol_data_strings(symbol_data=symbol_data))
+                print(f"exchange:{exchange}, symbol:{symbol} - success")
 
         if lost_symbols:
             lost_exchanges[exchange] = lost_symbols

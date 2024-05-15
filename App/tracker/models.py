@@ -7,6 +7,7 @@ class Exchanges(models.Model):
     description = models.TextField(blank=True)
     country = models.CharField(max_length=128, blank=True)
     currency = models.CharField(max_length=16)
+    site = models.CharField(max_length=64, blank=True)
 
 
 class Securities(models.Model):

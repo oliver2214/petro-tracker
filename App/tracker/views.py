@@ -40,12 +40,14 @@ def market(request):
     # Преобразуем QuerySet в словарь бирж
     exchanges = {exchange: None for exchange in list(exchanges_responce_orm)}
 
+    # Слияние данных influxdb и postgresql, чтобы консистентно отправить в html
     for exchange in exchanges.keys():
         exchanges[exchange] = data_market(date, exchange=exchange)
         if exchanges[exchange]:
             securities = Securities.objects.filter(exchange__exchange_code=exchange).values('ticker', 'shortname')
             for security in securities:
-                exchanges[exchange][security['ticker']]['SHORTNAME'] = security['shortname']
+                if exchanges[exchange].get(security['ticker'], False):
+                    exchanges[exchange][security['ticker']]['SHORTNAME'] = security['shortname']
 
     # Если все разы из БД вернулось False, то exchanges = False (Отсутствует подключение к БД)
     if all(map(lambda exchange: exchange is False, exchanges.values())):
