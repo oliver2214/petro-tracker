@@ -89,12 +89,12 @@ def security(request, exchange_code, ticker):
         "CEO": security.CEO,
         "ISIN": security.ISIN,
         "exchange_code": exchange_code,
+        "currency": exchange.currency,
     }
 
     # Формируем контекст для передачи данных в шаблон
     data = {
         "stylesheet_file": "base.css",
-        "ticker": ticker,
         'prices_json': json.dumps(security_dynamics),
         'security_data': security_data,
     }

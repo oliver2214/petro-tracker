@@ -25,6 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var data = splitData(loadJson("#jsonData"));
   var chartDom = document.getElementById("candlestick_frame");
   var ticker = document.getElementById("jsonData").getAttribute("ticker");
+  var currency = document.getElementById("jsonData").getAttribute("currency");
   var myChart = echarts.init(chartDom);
   var option;
 
@@ -113,10 +114,10 @@ document.addEventListener("DOMContentLoaded", function () {
         var prefix = [
           '<strong style="color: BLUE;">' + ticker + " </strong>: ",
           "<strong>Открытие: </strong>",
-          ", <strong>Закрытие: </strong>",
-          ", <strong>Макс: </strong>",
-          ", <strong>Мин: </strong>",
-          ", <strong>Объем: </strong>",
+          " " + currency + ", <strong>Закрытие: </strong>",
+          " " + currency + ", <strong>Макс: </strong>",
+          " " + currency + ", <strong>Мин: </strong>",
+          " " + currency + ", <strong>Объем: </strong>",
           "<i>" + date + "</i> ",
         ];
         return (
