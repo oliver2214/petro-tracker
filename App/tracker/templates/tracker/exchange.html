@@ -1,0 +1,92 @@
+{% extends 'tracker/base.html' %}
+{% block content %}
+{% load static %}
+
+<div class="container">
+    <div class="col-mt-6">
+        <h5 class="fs-1 mt-5 mb-4">{{ exchange.exchange_code }}</h5>
+        <p>{{ exchange.shortname }}</p>
+    </div>
+    <div class="col-mt-6">
+        <h5 class="fw-bold">Описание</h5>
+        <p>{{ exchange.description }}</p>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Страна</h5>
+                    <p class="card-text">{{ exchange.country }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Валюта</h5>
+                    <p class="card-text">{{ exchange.currency }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Сайт</h5>
+                    <p class="card-text"><a href="https://{{ exchange.site }}" target="_blank">{{ exchange.site }}</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form action="">
+        <div class="d-flex justify-content-end p-3">
+            <div class="me-3">
+                <input type="date" max={{ todays_date }} id="dateInput" class="form-control" name="date" value={{ date|date:"Y-m-d" }}>
+            </div>
+            <button type="submit" class="btn btn-primary">Применить</button>
+        </div>
+    </form>
+
+    {% if securities|length > 0 %}
+
+    <div class="row mt-3">
+        <div class="col">
+            <h5 class="fw-bold">Торговые данные:</h5>
+            <table class="table table-bordered table-sm">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Код</th>
+                        <th>Кратк. наим.</th>
+                        <th>Последняя, {{ exchange.currency }}</th>
+                        <th>Первая, {{ exchange.currency }}</th>
+                        <th>Мин., {{ exchange.currency }}</th>
+                        <th>Макс., {{ exchange.currency }}</th>
+                        <th>Объем</th>
+                        <th>Изменения за день, %</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ticker, security in securities.items %}
+                    <tr>
+                        <td><a href="{% url 'security' exchange.exchange_code ticker %}" class="link-dark">{{ ticker }}</a></td>
+                        <td>{{ security.SHORTNAME }}</td>
+                        <td>{{ security.CLOSE }}</td>
+                        <td>{{ security.OPEN }}</td>
+                        <td>{{ security.LOW }}</td>
+                        <td>{{ security.HIGH }}</td>
+                        <td>{{ security.VALUE }}</td>
+                        <td
+                            style="color: {% if security.DAY_CHANGES > 0 %}green{% elif security.DAY_CHANGES < 0 %}red{% endif %}">
+                            <strong>{{ security.DAY_CHANGES }}</strong>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

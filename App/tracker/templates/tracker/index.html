@@ -10,14 +10,14 @@
 <div class="fullscreen-container" style="height: 50vh;">
     <div class="stripe-container">
         <div class="card-container container">
-            {% for exchange in exchanges %}
+            {% for exchange_code in exchanges %}
             <div class="card-content">
-                <a href="{% url 'market'%}" class="rectangular-card">
+                <a href="{% url 'exchange' exchange_code %}" class="rectangular-card">
                     <div class="logo">
-                        <img src="{% static 'tracker/images/' %}{{ exchange }}-logo.jpg" alt="{{ exchange }} Logo">
+                        <img src="{% static 'tracker/images/' %}{{ exchange_code }}-logo.jpg" alt="{{ exchange_code }} Logo">
                     </div>
                     <div class="exchange-name">
-                        <h5>{{ exchange }}</h5>
+                        <h5>{{ exchange_code }}</h5>
                     </div>
                 </a>
             </div>

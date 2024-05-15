@@ -12,19 +12,20 @@ client = influxdb_client.InfluxDBClient(url=url,
 query_api = client.query_api()
 
 
-def data_market(date: datetime, exchange: str):
+def get_data_market(date: datetime, exchange: str):
     """
     Функция для предоставления информации на страницу market.
     Для работы требуется поднять сервер для работы с БД
     C:\Program Files\InfluxData\influxdb
 
-    Возвращает данные по рынку в формате списка словарей или False в случае ошибки.
+    Возвращает данные по рынку в формате словаря, где ключ - код акции,
+    а значение словарь данных об акции или False в случае ошибки.
 
     Parameters:
     - date (datetime): Дата, для которой необходимо получить информацию.
 
     Returns:
-    - list of dict: Список словарей с данными по рынку или пустой список, если данных нет.
+    - dict: Словарь с данными по рынку или пустой список, если данных нет.
     - False: В случае ошибки подключения к базе данных.
     """
     try:
@@ -64,7 +65,7 @@ def data_market(date: datetime, exchange: str):
         return False
 
 
-def data_security(exchange, ticker):
+def get_data_security(exchange, ticker):
     try:
         data = []
 

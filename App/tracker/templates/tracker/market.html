@@ -16,7 +16,8 @@
         </div>
     </form>
 
-    {% if data_table|length > 0 %}
+    {% if is_db_connected and not no_data_in_db %}
+    <h5 class="fw-bold">Торговые данные:</h5>
 
         {% for exchange_code, exchange_data in data_table.items %}
 
@@ -30,9 +31,13 @@
                 </h2>
                 <div id="collapse{{ exchange_code }}" class="accordion-collapse collapse"
                     aria-labelledby="heading{{ exchange_code }}">
-                    <div class="accordion-body">
+                    <div class="mt-2">
+                        <div class="mt-3 px-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div><a href="{% url 'exchange' exchange_code %}" class="text-decoration-none">Подробнее</a></div>
+                            </div>
+                        </div>
 
-                        <a href="{% url 'market'%}" class="link-primary">{{ exchange_code }}</a>
 
                         <table class="table table-bordered table-sm">
                             <thead class="table-dark">
@@ -105,7 +110,7 @@
         </table>
         {% endfor %}
 
-    {% elif data_table is False %}
+    {% elif is_db_connected is False %}
 
     <div class="centered-text">
         <h5>Ошибка подключения к базе данных.</h5>
