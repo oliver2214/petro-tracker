@@ -15,6 +15,6 @@ class Securities(models.Model):
     description = models.TextField(blank=True)
     site = models.CharField(max_length=64, blank=True)
     CEO = models.CharField(max_length=64, blank=True)
-    ISIN = models.CharField(max_length=32)
+    ISIN = models.CharField(max_length=32, blank=True)
 
     exchange = models.ForeignKey("Exchanges", on_delete=models.PROTECT)
