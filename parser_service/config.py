@@ -15,3 +15,5 @@ if os.path.exists(".env"):
 else:
     trading_view_username = None
     trading_view_password = None
+
+API_TOKEN = "SECRETAPITOKEN_12309876"

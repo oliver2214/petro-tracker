@@ -51,7 +51,7 @@ def market(request):
     else:
         is_db_connected = True
 
-    if all(map(lambda exchange: len(exchange["stocks"]) == 0, exchanges.values())):
+    if is_db_connected and all(map(lambda exchange: len(exchange["stocks"]) == 0, exchanges.values())):
         no_data_in_db = True
     else:
         no_data_in_db = False
@@ -119,9 +119,10 @@ def exchange(request, exchange_code):
     securities_orm = Securities.objects.filter(exchange__exchange_code=exchange_code).values('ticker', 'shortname')
 
     # Обновляем данные о ценных бумагах в словаре
-    for security in securities_orm:
-        if securities.get(security['ticker'], False):
-            securities[security['ticker']]['SHORTNAME'] = security['shortname']
+    if securities:
+        for security in securities_orm:
+            if securities.get(security['ticker'], False):
+                securities[security['ticker']]['SHORTNAME'] = security['shortname']
 
     exchange_data = {
         "exchange_code": exchange_code,
