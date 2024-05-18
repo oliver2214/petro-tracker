@@ -1,6 +1,4 @@
 # Файл для подключения и описания запросов на чтение к InfluxDB
-from influxdb_client.client.exceptions import InfluxDBError
-
 from datetime import datetime
 import influxdb_client
 from .influxdb_config import org, url, token, bucket, measurement
