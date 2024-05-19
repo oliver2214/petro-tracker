@@ -1,0 +1,55 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_DB: petrotracker_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12354lbvf
+    ports:
+      - "8009:5432"
+
+  influxdb:
+    image: influxdb:2.0
+    container_name: influxdb
+    ports:
+      - "8086:8086"
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: upgrade
+      DOCKER_INFLUXDB_INIT_USERNAME: admin
+      DOCKER_INFLUXDB_INIT_PASSWORD: admin_password
+      DOCKER_INFLUXDB_INIT_ORG: "National University of Oil and Gas «Gubkin University»"
+      DOCKER_INFLUXDB_INIT_BUCKET: PetroTrackerTSDB
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: "rim6Bm2UQwCr0o6Z-JZfGcFc_ropA1VnDLsaT3S98uOAmrjbRcG0tCVvS9f18VcsG6Nx64-AJd78LbEiShQ6EQ=="
+    volumes:
+      - influxdb-data:/var/lib/influxdb2
+
+  django:
+    build:
+      context: ./App
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      - DEBUG=True
+    volumes:
+      - ./App:/django_app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  petrotracker_parser:
+    build:
+      context: ./parser_service
+    command: uvicorn main:app --host 0.0.0.0 --port 8001
+    volumes:
+      - ./parser_service:/fastapi_app
+    ports:
+      - "8001:8001"
+    depends_on:
+      - db
+
+volumes:
+  influxdb-data: {}

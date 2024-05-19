@@ -83,7 +83,7 @@ DATABASES = {
         'NAME': 'petrotracker_db',
         'USER': 'postgres',
         'PASSWORD': '12354lbvf',
-        'HOST': 'localhost',
+        'HOST': 'db',
         'PORT': 5432,
     }
 }

@@ -11,7 +11,6 @@ flake8-docstrings==1.7.0
 idna==3.6
 influxdb-client==1.40.0
 mccabe==0.7.0
--e git+ssh://git@github.com/oliver2214/petro-tracker.git@939ae33f7e85818c5a449d966fa3cdcde0e9b3c9#egg=petrotracker
 psycopg2==2.9.9
 pycodestyle==2.11.1
 pydocstyle==6.3.0

@@ -32,7 +32,7 @@ def parse_historic_data(request: ParseRequest,
         if api_token != API_TOKEN:
             raise HTTPException(status_code=401, detail="Unauthorized")
 
-        client = influxdb_client.InfluxDBClient(url=TimeseriesConfig.url, token=TimeseriesConfig.token, org=TimeseriesConfig.org)
+        client = influxdb_client.InfluxDBClient(url=TimeseriesConfig.url, token=TimeseriesConfig.token)
         write_api = client.write_api(write_options=SYNCHRONOUS)
 
         exchanges = get_exchanges_and_securities()
@@ -56,7 +56,8 @@ def parse_historic_data(request: ParseRequest,
             if lost_symbols:
                 lost_exchanges[exchange] = lost_symbols
             if exchange_data_strings:
-                write_api.write(bucket=TimeseriesConfig.bucket, org=TimeseriesConfig.org, record="\n".join(exchange_data_strings))
+                write_api.write(bucket=TimeseriesConfig.bucket, org=TimeseriesConfig.org,
+                                record="\n".join(exchange_data_strings))
 
         client.close()
 
@@ -88,4 +89,5 @@ def clear_bucket_by_measurement(start: datetime = "1970-01-01T00:00:00Z",
 
     except Exception as e:
         client.close()
+        print(e)
         raise HTTPException(status_code=500)

@@ -1,7 +1,8 @@
 import os
 
-token = os.environ.get("INFLUXDB_TOKEN")
+token = "rim6Bm2UQwCr0o6Z-JZfGcFc_ropA1VnDLsaT3S98uOAmrjbRcG0tCVvS9f18VcsG6Nx64-AJd78LbEiShQ6EQ=="
+# os.environ.get("INFLUXDB_TOKEN")
 org = "National University of Oil and Gas «Gubkin University»"
-url = "http://127.0.0.1:8086"
+url = "http://influxdb:8086"
 bucket = "PetroTrackerTSDB"
 measurement = "stock_data"
