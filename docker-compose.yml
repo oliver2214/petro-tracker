@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_DB: petrotracker_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12354lbvf
+    ports:
+      - "5432:5432"
+
+  django:
+    build:
+      context: ./App
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      - DEBUG=True
+      - DATABASE_URL=postgres://postgres:12354lbvf@db:5432/petrotracker_db
+    volumes:
+      - ./App:/django_app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
