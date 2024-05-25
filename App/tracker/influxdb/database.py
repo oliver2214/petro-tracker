@@ -13,8 +13,6 @@ query_api = client.query_api()
 def get_data_market(date: datetime, exchange: str):
     """
     Функция для предоставления информации на страницу market.
-    Для работы требуется поднять сервер для работы с БД
-    C:\Program Files\InfluxData\influxdb
 
     Возвращает данные по рынку в формате словаря, где ключ - код акции,
     а значение словарь данных об акции или False в случае ошибки.
