@@ -21,10 +21,6 @@ def index(request):
     return render(request, "tracker/index.html", data)
 
 
-def auth(request):
-    return render(request, "tracker/auth.html")
-
-
 def market(request):
     # Для отображения информации о торгах нужна конкретная дата
     # Дату выбирает либо пользователь на странице, либо автоматически выбирается предыдущий день
