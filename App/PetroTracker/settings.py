@@ -26,7 +26,9 @@ SECRET_KEY = 'django-insecure-6h*5w%z5lnw7y+&v1cf)r7r0)ih^=4ma*+&@%xnw(20f8ai3z+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '0.0.0.0', 'localhost', '127.0.0.1'
+]
 
 
 # Application definition
@@ -80,10 +82,10 @@ WSGI_APPLICATION = 'PetroTracker.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'petrotracker_db',
+        'NAME': 'postgres',
         'USER': 'postgres',
-        'PASSWORD': '12354lbvf',
-        'HOST': 'db',
+        'PASSWORD': 'postgres',
+        'HOST': 'localhost',
         'PORT': 5432,
     }
 }

@@ -1,20 +1,14 @@
 import sys
 import os
-
-# Получаем путь к родительской директории
-parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-
-# Добавляем родительскую директорию в sys.path
-sys.path.append(parent_dir)
-
-from config import DatabaseConfig
-
 import psycopg2
+from ..config import DatabaseConfig
+
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.append(parent_dir)
 
 
 def get_exchanges_and_securities():
     try:
-        # Подключение к базе данных
         conn = psycopg2.connect(
             dbname=DatabaseConfig.dbname,
             user=DatabaseConfig.user,
@@ -24,7 +18,6 @@ def get_exchanges_and_securities():
         )
         cursor = conn.cursor()
 
-        # SQL-запрос для получения данных
         query = """
         SELECT e.exchange_code, s.ticker
         FROM tracker_securities s
@@ -35,7 +28,6 @@ def get_exchanges_and_securities():
         cursor.execute(query)
         results = cursor.fetchall()
 
-        # Структура для хранения данных
         exchanges = {}
 
         for exchange_code, ticker in results:

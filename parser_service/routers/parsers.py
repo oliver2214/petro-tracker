@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Annotated
 
 from fastapi import APIRouter, HTTPException, Header, status
@@ -6,8 +6,9 @@ import influxdb_client
 from influxdb_client.client.write_api import SYNCHRONOUS
 from tvDatafeed import TvDatafeed, Interval
 
-from config import API_TOKEN, TimeseriesConfig
-from db.queries import get_exchanges_and_securities
+from ..config import API_TOKEN, TimeseriesConfig
+from ..db.queries import get_exchanges_and_securities
+from parser_service.routers.crypto import process_crypto
 from schemes.parser_schemes import ParseResponse, ParseRequest
 
 router = APIRouter()
@@ -59,6 +60,9 @@ def parse_historic_data(request: ParseRequest,
                 write_api.write(bucket=TimeseriesConfig.bucket, org=TimeseriesConfig.org,
                                 record="\n".join(exchange_data_strings))
 
+        startdate_ms, enddate_ms = get_timestamps(request.n_bars)
+        process_crypto(client, write_api, startdate_ms, enddate_ms)
+
         client.close()
 
         if lost_exchanges:
@@ -91,3 +95,12 @@ def clear_bucket_by_measurement(start: datetime = "1970-01-01T00:00:00Z",
         client.close()
         print(e)
         raise HTTPException(status_code=500)
+
+def get_timestamps(days_ago: int):
+    now = datetime.utcnow()
+    past = now - timedelta(days=days_ago)
+    
+    now_ms = int(now.timestamp() * 1000)
+    past_ms = int(past.timestamp() * 1000)
+    
+    return past_ms, now_ms

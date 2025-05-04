@@ -5,11 +5,11 @@ services:
     image: postgres:13
     restart: always
     environment:
-      POSTGRES_DB: petrotracker_db
+      POSTGRES_DB: postgres
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 12354lbvf
+      POSTGRES_PASSWORD: postgres
     ports:
-      - "8009:5432"
+      - "5432:5432"
 
   influxdb:
     image: influxdb:2.0
@@ -26,30 +26,30 @@ services:
     volumes:
       - influxdb-data:/var/lib/influxdb2
 
-  django:
-    build:
-      context: ./App
-      dockerfile: Dockerfile
-    restart: always
-    environment:
-      - DEBUG=True
-    volumes:
-      - ./App:/django_app
-    ports:
-      - "8000:8000"
-    depends_on:
-      - db
+  # django:
+  #   build:
+  #     context: ./App
+  #     dockerfile: Dockerfile
+  #   restart: always
+  #   environment:
+  #     - DEBUG=True
+  #   volumes:
+  #     - ./App:/django_app
+  #   ports:
+  #     - "8000:8000"
+  #   depends_on:
+  #     - db
 
-  petrotracker_parser:
-    build:
-      context: ./parser_service
-    command: uvicorn main:app --host 0.0.0.0 --port 8001
-    volumes:
-      - ./parser_service:/fastapi_app
-    ports:
-      - "8001:8001"
-    depends_on:
-      - db
+  # petrotracker_parser:
+  #   build:
+  #     context: ./parser_service
+  #   command: uvicorn main:app --host 0.0.0.0 --port 8001
+  #   volumes:
+  #     - ./parser_service:/fastapi_app
+  #   ports:
+  #     - "8001:8001"
+  #   depends_on:
+  #     - db
 
 volumes:
   influxdb-data: {}

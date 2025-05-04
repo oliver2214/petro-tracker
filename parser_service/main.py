@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routers import parsers
+from .routers import parsers
 
 app = FastAPI()
 

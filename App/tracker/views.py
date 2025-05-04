@@ -27,10 +27,10 @@ def market(request):
     date = get_date(request.GET.get("date", None))
 
     # Получаем все объекты из модели Exchanges и извлекаем значения exchange_code
-    exchanges_responce_orm = Exchanges.objects.values_list('exchange_code', 'currency', 'shortname')
+    exchanges_response_orm = Exchanges.objects.values_list('exchange_code', 'currency', 'shortname')
 
     # Преобразуем QuerySet в словарь бирж
-    exchanges = {exchange[0]: {"currency": exchange[1], "exchange_shortname": exchange[2]} for exchange in list(exchanges_responce_orm)}
+    exchanges = {exchange[0]: {"currency": exchange[1], "exchange_shortname": exchange[2]} for exchange in list(exchanges_response_orm)}
 
     # Слияние данных influxdb и postgresql, чтобы консистентно отправить в html
     for exchange_code in exchanges.keys():

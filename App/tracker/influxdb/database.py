@@ -58,6 +58,7 @@ def get_data_market(date: datetime, exchange: str):
 
     except Exception as exception:
         # Исключение при проблеме с подключением с БД
+        print(exception)
         return False
 
 
@@ -97,4 +98,5 @@ def get_data_security(exchange, ticker):
 
     except Exception as exception:
         # Исключение при проблеме с подключением с БД
+        print(exception)
         return False
